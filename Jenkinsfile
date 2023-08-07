@@ -4,28 +4,7 @@ pipeline {
     pollSCM '* * * * *'
   }
   stages {
-//     stage('SonarQube Analysis') {
-//       steps {
-//         sh '''
-// 	 whoami
-// 	 echo $PATH
-//          echo Restore started on `date`.
-//          dotnet restore panz.csproj
-//          dotnet build panz.csproj -c Release
-        
-//         '''
-//       }
-//     }
-//     stage('Dotnet Publish') {
-//       steps {
-	      
-//         sh '''
-// 	 dotnet restore panz.csproj
-//          dotnet build panz.csproj -c Release
-// 	 dotnet publish panz.csproj -c Release
-// 	'''
-//       }   
-//     }
+
    stage('Docker build and push') {
       steps {
         sh '''
@@ -40,27 +19,14 @@ pipeline {
    }
     
     }
-    // stage('ecs deploy') {
-    //   steps {
-    //     sh '''
-    //       chmod +x changebuildnumber.sh
-    //       ./changebuildnumber.sh $BUILD_NUMBER
-	//   sh -x ecs-auto.sh
-    //       '''
-    //  }    
-    // }
+    stage('ecs deploy') {
+      steps {
+        sh '''
+          chmod +x changebuildnumber.sh
+          ./changebuildnumber.sh $BUILD_NUMBER
+	      sh -x ecs-auto.sh
+          '''
+     }    
+    }
 }
-// post {
-//     failure {
-//         mail to: 'unsolveddevops@gmail.com',
-//              subject: "Failed Pipeline: ${BUILD_NUMBER}",
-//              body: "Something is wrong with ${env.BUILD_URL}"
-//     }
-//      success {
-//         mail to: 'unsolveddevops@gmail.com',
-//              subject: "successful Pipeline:  ${env.BUILD_NUMBER}",
-//              body: "Your pipeline is success ${env.BUILD_URL}"
-//     }
-// }
 
-}

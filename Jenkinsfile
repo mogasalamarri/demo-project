@@ -18,7 +18,6 @@ pipeline {
      }   
    }
     
-    }
     stage('ecs deploy') {
       steps {
         sh '''
@@ -28,5 +27,6 @@ pipeline {
           '''
      }    
     }
+}
 }
 
